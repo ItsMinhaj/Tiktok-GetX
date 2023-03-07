@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiktok_getx/constant.dart';
 import 'package:tiktok_getx/dependency/dependency.dart';
-import 'package:tiktok_getx/routes/app_routes.dart';
+import 'package:tiktok_getx/routes/app_pages.dart';
+import 'package:tiktok_getx/routes/routes.dart';
 import 'package:tiktok_getx/views/screens/auth/login_screen.dart';
-import 'package:tiktok_getx/views/screens/auth/singup_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       // options: DefaultFirebaseOptions.currentPlatform,
       );
-  await Dependency.init();
+
   runApp(const MyApp());
 }
 
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       ),
       getPages: AppRoutes.pagesRoute,
       home: const LoginScreen(),
+      initialBinding: LoginBinding(),
     );
   }
 }

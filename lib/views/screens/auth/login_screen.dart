@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.offAndToNamed(registerRoute);
+                      Get.offNamed(registerRoute);
                     },
                     child: Text(
                       "Register",

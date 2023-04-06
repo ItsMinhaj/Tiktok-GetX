@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiktok_getx/controllers/registration_controller.dart';
@@ -61,15 +63,38 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 const SizedBox(height: 15),
                 Stack(
-                  children: const [
-                    CircleAvatar(
-                      radius: 64,
-                      backgroundImage: NetworkImage(
-                          "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"),
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        await regController.pickImageFromGallery();
+                      },
+                      child: Obx(
+                        () {
+                          return Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: regController.imagePath.isNotEmpty
+                                  ? Image.file(
+                                      File(regController.imagePath.toString()),
+                                      fit: BoxFit.fill,
+                                    )
+                                  : const Icon(
+                                      Icons.person,
+                                      size: 100,
+                                    ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                    Positioned(
-                      bottom: -5,
-                      left: 90,
+                    const Positioned(
+                      bottom: -2,
+                      left: 70,
                       child: Icon(Icons.add_a_photo),
                     ),
                   ],
@@ -119,7 +144,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         onTap: () async {
                           if (formkey.currentState!.validate()) {
                             await regController.registerUser(
-                                _name.text, _email.text, _password.text, null);
+                                _name.text,
+                                _email.text,
+                                _password.text,
+                                regController.imagePath.value.toString());
                           }
                         },
                         child: Ink(

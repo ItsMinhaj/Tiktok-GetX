@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:tiktok_getx/constant.dart';
 import 'package:tiktok_getx/dependency/dependency.dart';
 import 'package:tiktok_getx/routes/app_pages.dart';
-import 'package:tiktok_getx/routes/routes.dart';
 import 'package:tiktok_getx/views/screens/auth/login_screen.dart';
 
 void main() async {

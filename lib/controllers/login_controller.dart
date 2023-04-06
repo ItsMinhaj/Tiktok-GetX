@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:tiktok_getx/routes/routes.dart';
 
 import '../utilies/error_show_dialog.dart';
 
 class LoginController extends GetxController {
   RxBool isLoading = false.obs;
+  late Rx<User?> _user;
 
   Future<void> loginUser(String? email, String? password) async {
     isLoading.value = true;
@@ -14,6 +16,7 @@ class LoginController extends GetxController {
             .signInWithEmailAndPassword(email: email, password: password);
         Get.snackbar("", "Your'e logged in.");
       }
+      Get.offAllNamed(homeRoute);
       isLoading.value = false;
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
@@ -27,6 +30,23 @@ class LoginController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       await errorShowDialog(e.toString());
+    }
+  }
+
+// User Login session persistance
+  @override
+  void onReady() {
+    _user = FirebaseAuth.instance.currentUser as Rx<User?>;
+    _user.bindStream(FirebaseAuth.instance.authStateChanges());
+    ever(_user, _setInitialScreen);
+    super.onReady();
+  }
+
+  _setInitialScreen(User? user) {
+    if (user == null) {
+      Get.offAllNamed(loginRoute);
+    } else {
+      Get.offAllNamed(homeRoute);
     }
   }
 }

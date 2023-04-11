@@ -2,9 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiktok_getx/constant.dart';
+import 'package:tiktok_getx/controllers/bottom_nav_controller.dart';
 import 'package:tiktok_getx/dependency/dependency.dart';
 import 'package:tiktok_getx/routes/app_pages.dart';
-import 'package:tiktok_getx/views/screens/auth/login_screen.dart';
+import 'package:tiktok_getx/views/screens/home/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: backgroundColor,
       ),
       getPages: AppRoutes.pagesRoute,
-      home: const LoginScreen(),
+      home: const HomeScreen(),
       initialBinding: LoginBinding(),
     );
   }

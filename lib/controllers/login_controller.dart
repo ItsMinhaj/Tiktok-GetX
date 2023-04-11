@@ -36,7 +36,7 @@ class LoginController extends GetxController {
 // User Login session persistance
   @override
   void onReady() {
-    _user = FirebaseAuth.instance.currentUser as Rx<User?>;
+    _user = Rx<User?>(FirebaseAuth.instance.currentUser);
     _user.bindStream(FirebaseAuth.instance.authStateChanges());
     ever(_user, _setInitialScreen);
     super.onReady();

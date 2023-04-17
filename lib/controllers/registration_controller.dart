@@ -48,22 +48,25 @@ class RegistrationController extends GetxController {
           imagePath!.isNotEmpty) {
         final user = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
+
+        String downloadUrl = await _uploadToStorage(File(imagePath.toString()));
+
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+        await firestore.collection("users").doc(user.user!.email).set(UserModel(
+                name: username,
+                email: email,
+                userId: user.user!.uid,
+                profilePhoto: downloadUrl)
+            .toMap());
+        isLoading.value = false;
+
         Get.snackbar("", "Resitration has been successfull",
             colorText: Colors.white);
-        String downloadUrl = await _uploadToStorage(File(imagePath.toString()));
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(user.user!.email)
-            .set(UserModel(
-                    name: username,
-                    email: email,
-                    userId: user.user!.uid,
-                    profilePhoto: downloadUrl)
-                .toMap());
-
         Get.offAllNamed(homeRoute);
+      } else {
+        isLoading.value = false;
+        throw "Profile image or others field may empty";
       }
-      isLoading.value = false;
     } on FirebaseAuthException catch (e) {
       if (e.code == "email-already-in-use") {
         await errorShowDialog("Email Already In Use");

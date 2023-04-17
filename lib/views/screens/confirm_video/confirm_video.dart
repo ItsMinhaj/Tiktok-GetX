@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tiktok_getx/constant.dart';
+import 'package:tiktok_getx/controllers/upload_video_controller.dart';
 
 import 'package:tiktok_getx/views/widgets/text_input_field.dart';
 import 'package:video_player/video_player.dart';
@@ -19,6 +21,8 @@ class _ConfirmVideoScreenState extends State<ConfirmVideoScreen> {
   late TextEditingController _captionController;
   late VideoPlayerController _playerController;
 
+  final upVideoController = Get.put(UploadVideoController());
+
   @override
   void initState() {
     _titleController = TextEditingController();
@@ -28,9 +32,9 @@ class _ConfirmVideoScreenState extends State<ConfirmVideoScreen> {
     });
 
     _playerController.initialize();
-    _playerController.play();
-    _playerController.setLooping(true);
-    _playerController.setVolume(1);
+    // _playerController.play();
+    // _playerController.setLooping(true);
+    // _playerController.setVolume(1);
 
     super.initState();
   }
@@ -79,15 +83,30 @@ class _ConfirmVideoScreenState extends State<ConfirmVideoScreen> {
                         isObsecure: false),
                   ),
                   const SizedBox(height: 30),
-                  Ink(
-                    height: 40,
-                    width: 120,
-                    color: buttonColor,
-                    child: const Center(
-                        child: Text(
-                      "Share",
-                      style: TextStyle(fontSize: 18),
-                    )),
+                  InkWell(
+                    onTap: () {
+                      upVideoController.uploadVideo(_titleController.text,
+                          _captionController.text, widget.videoPath.path);
+                    },
+                    child: Ink(
+                      height: 40,
+                      width: 120,
+                      color: buttonColor,
+                      child: Center(child: Obx(() {
+                        return upVideoController.isLoading.value
+                            ? const Center(
+                                child: Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ))
+                            : const Text(
+                                "Share",
+                                style: TextStyle(fontSize: 18),
+                              );
+                      })),
+                    ),
                   )
                 ],
               ),

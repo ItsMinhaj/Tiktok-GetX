@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiktok_getx/dependency/dependency.dart';
 import 'package:tiktok_getx/routes/routes.dart';
